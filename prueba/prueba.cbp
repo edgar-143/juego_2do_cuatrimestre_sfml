@@ -13,11 +13,13 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="../../proyectos/prueba/SFML-2.6.2/include" />
 				</Compiler>
 				<Linker>
 					<Add library="sfml-graphics-d" />
 					<Add library="sfml-window-d" />
 					<Add library="sfml-system-d" />
+					<Add directory="../SFML-2.6.2/lib" />
 				</Linker>
 			</Target>
 			<Target title="Release">

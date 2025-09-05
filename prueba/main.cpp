@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
-
+#include<iostream>
+using namespace std;
 int main()
 {
     sf::RenderWindow ventana(sf::VideoMode(800, 600), "Scrolling con limites");
@@ -12,7 +13,14 @@ int main()
 
     sf::Sprite sprite_fondo(textura_fondo);
     sprite_fondo.setScale(0.75f, 0.75f);
-    sprite_fondo.setPosition(0, -1250);   // ‚¨ÖÔ∏è como vos lo pusiste
+    sprite_fondo.setPosition(0, -1250);
+    float ancho = sprite_fondo.getGlobalBounds().width;
+
+// --- Obtener el ˙ltimo pÌxel en X ---
+    float ultimoPixelX = sprite_fondo.getPosition().x + ancho;
+
+// Mostrarlo por consola
+    cout << "El ˙ltimo pixel en X est· en: " << ultimoPixelX <<endl;
 
     // ===== Personaje =====
     sf::Texture textura_personaje;
@@ -21,11 +29,11 @@ int main()
 
     sf::Sprite sprite_pj(textura_personaje);
     sprite_pj.setScale(0.15f, 0.15f);
-    sprite_pj.setPosition(100, 460);         // ‚¨ÖÔ∏è como vos lo pusiste
+    sprite_pj.setPosition(300, 460);
 
 
 
-    float velocidad = 1;
+    float velocidad = 0.5;
 
 
     while (ventana.isOpen())
@@ -37,23 +45,52 @@ int main()
                 ventana.close();
         }
 
-       if(sf::Keyboard::isKeyPressed(sf::Keyboard::A) or sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
-           sprite_fondo.move(-velocidad,0);//MOVIMIENTO DEL FONDO PARA DERECHA
-            sprite_pj.move(velocidad,0);//MOVIMIENTO DEL FONDO PARA IZQUIERDA
-       }
-       if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)or sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-         sprite_fondo.move(velocidad,0);//MOVIMIENTO DEL FONDO PARA IZQUIERDA
-          sprite_pj.move(-velocidad,0);//MOVIMIENTO DEL FONDO PARA DERECHA
-       }
-       if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)or sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
-            sprite_fondo.move(0,velocidad);//MOVIMIENTO DEL FONDO PARA ABAJO
-             sprite_pj.move(0,-velocidad);//MOVIMIENTO DEL FONDO PARA ARRIBA
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::D) or sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        {
+            sprite_fondo.move(-velocidad,0);//MOVIMIENTO DEL FONDO PARA IZQUIERDA
+            sprite_pj.move(velocidad,0);//MOVIMIENTO DEL PJ PARA DERECHA
 
-       }
-       if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)or sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ){
-          sprite_fondo.move(0,-velocidad);//MOVIMIENTO DEL FONDO PARA ARRIBA
-           sprite_pj.move(0,velocidad);//MOVIMIENTO DEL PJ PARA ABAJO
-       }
+
+
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)or sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        {
+            sprite_fondo.move(velocidad,0);//MOVIMIENTO DEL FONDO PARA DERECHA
+            sprite_pj.move(-velocidad,0);//MOVIMIENTO DEL FONDO PARA IZQUIERDA
+
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)or sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        {
+            sprite_fondo.move(0,velocidad);//MOVIMIENTO DEL FONDO PARA ABAJO
+
+
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)or sf::Keyboard::isKeyPressed(sf::Keyboard::Down) )
+        {
+            sprite_fondo.move(0,-velocidad);//MOVIMIENTO DEL FONDO PARA ARRIBA
+
+        }
+        if (sprite_fondo.getPosition().x > 0)
+        {
+            sprite_fondo.setPosition(0, sprite_fondo.getPosition().y);}
+
+         if (sprite_fondo.getPosition().x <-2000 )
+        {
+            sprite_fondo.setPosition(-2000, sprite_fondo.getPosition().y);
+        }
+        if(sprite_pj.getPosition().x<100){
+            sprite_pj.setPosition(100,sprite_pj.getPosition().y);
+        }
+        if(sprite_pj.getPosition().x>650){
+            sprite_pj.setPosition(650,sprite_pj.getPosition().y);
+        }
+
+
+
+// LÌmite derecho (usando ancho del fondo)         //4079px    2468px
+
+
+
 
         // ===== Dibujar =====
         ventana.clear();
